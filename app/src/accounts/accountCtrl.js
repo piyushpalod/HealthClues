@@ -1,8 +1,6 @@
 function AccountCtrl(AccountSvc, $window) {
   var vm = this;
-  
     
-  vm.myProperty = 'my property';
   vm.openForm = openForm;
   
   function openForm(url){
@@ -12,10 +10,10 @@ function AccountCtrl(AccountSvc, $window) {
 
   AccountSvc.myGetFunction()
     .then(function(response) {
-      vm.accounts = response.data;
+      vm.data = response.data;
     });
 }
 
 angular
-  .module('app.accounts')
+  .module('app.tools')
   .controller('AccountCtrl', AccountCtrl);

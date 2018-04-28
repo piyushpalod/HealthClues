@@ -1,2 +1,2 @@
 // feature module
-angular.module('app.accounts', []);
+angular.module('app.tools', []);

@@ -14,5 +14,5 @@ function AccountSvc($http) {
 }
 
 angular
-  .module('app.accounts')
+  .module('app.tools')
   .factory('AccountSvc', AccountSvc);

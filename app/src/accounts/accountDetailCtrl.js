@@ -9,5 +9,5 @@ function AccountDetailCtrl($rootScope, $routeParams, AccountSvc ) {
 }
 
 angular
-  .module('app.accounts')
+  .module('app.tools')
   .controller('AccountDetailCtrl', AccountDetailCtrl);

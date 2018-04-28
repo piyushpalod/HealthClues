@@ -1,15 +1,10 @@
 angular
-  .module('app.accounts')
+  .module('app.tools')
   .config(function($routeProvider,$locationProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: '/app/src/accounts/account-list.html',
+        templateUrl: '/app/src/accounts/toolList.html',
         controller: 'AccountCtrl',
-        controllerAs: 'vm'
-      })
-      .when('/detail/:accountId', {
-        templateUrl: '/app/src/accounts/account-detail.html',
-        controller: 'AccountDetailCtrl',
         controllerAs: 'vm'
       })
       .otherwise({
