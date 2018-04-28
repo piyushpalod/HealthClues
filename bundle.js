@@ -9,32 +9,18 @@ angular.module('app').config(["$logProvider", function ($logProvider) {
 // $log.debug('hello!');
 'use strict';
 
-//class AccountCtrl {
-//  constructor(accountSvc,$log) {
-//    $log.debug('debug from AccountCtrl');
-//
-//    this.myProperty = 'here i is';
-//
-//    accountSvc.myGetFunction('/assets/data/contacts.json')
-//      .then(result => this.accounts = result.accounts);
-//  }
-//
-//  myFunction(arg) {
-//    console.log(arg);
-//  }
-//}
-
-AccountCtrl.$inject = ["$rootScope", "$log", "AccountSvc"];
-function AccountCtrl($rootScope, $log, AccountSvc) {
+AccountCtrl.$inject = ["AccountSvc", "$window"];
+function AccountCtrl(AccountSvc, $window) {
   var vm = this;
 
-  $log.debug('Set $logProvider.debugEnabled(false) in app.config.js to turn this message off');
-
   vm.myProperty = 'my property';
+  vm.openForm = openForm;
 
-  $rootScope.$emit('titleChanged', 'home');
+  function openForm(url) {
+    $window.open(url, '_blank');
+  };
 
-  AccountSvc.myGetFunction('/assets/data/accounts.json').then(function (response) {
+  AccountSvc.myGetFunction().then(function (response) {
     vm.accounts = response.data;
   });
 }
@@ -54,6 +40,24 @@ function AccountDetailCtrl($rootScope, $routeParams, AccountSvc) {
 }
 
 angular.module('app.accounts').controller('AccountDetailCtrl', AccountDetailCtrl);
+'use strict';
+
+AccountSvc.$inject = ["$http"];
+function AccountSvc($http) {
+  AccountSvc.myGetFunction = function () {
+    return $http.get('https://www.healthclues.net/surgemateapi/api/virtualmd.php/getquestions?formID=123');
+  };
+
+  AccountSvc.getAccountById = function (accountId, successCallback) {
+    $http.get('https://www.healthclues.net/surgemateapi/api/virtualmd.php/getquestions?formID=123').then(function (response) {
+      successCallback(response.data);
+    });
+  };
+
+  return AccountSvc;
+}
+
+angular.module('app.accounts').factory('AccountSvc', AccountSvc);
 'use strict';
 
 angular.module('app.accounts').config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
@@ -76,72 +80,6 @@ angular.module('app.accounts').config(["$routeProvider", "$locationProvider", fu
 }]);
 'use strict';
 
-// ES6
-// class AccountSvc {
-//   constructor($http, $q) {
-//     this.$http = $http;
-//   }
-
-//   myGetFunction(myApiRoute) {
-//     return this.$http.get(myApiRoute);
-//   }
-
-//   getAccountById(accountId, successCallback) {   
-//     this.$http.get('/assets/data/accounts.json')
-//       .then(function(response) {
-//         let i;
-
-//         for  (i = 0; i < response.data.length; i += 1) {
-//           if (response.data[i].id === accountId) {
-//             successCallback(response.data[i]);
-//             break;
-//           }
-//         }
-//       });
-//   }
-// }
-
-// angular
-//   .module('app.accounts')
-//   .service('accountSvc', AccountSvc);
-
-AccountSvc.$inject = ["$http"];
-function AccountSvc($http) {
-  AccountSvc.myGetFunction = function (myApiRoute) {
-    return $http.get(myApiRoute);
-  };
-
-  AccountSvc.getAccountById = function (accountId, successCallback) {
-    $http.get('/assets/data/accounts.json').then(function (response) {
-      var i;
-
-      for (i = 0; i < response.data.length; i += 1) {
-        if (response.data[i].id === accountId) {
-          successCallback(response.data[i]);
-          break;
-        }
-      }
-    });
-  };
-
-  return AccountSvc;
-}
-
-angular.module('app.accounts').factory('AccountSvc', AccountSvc);
-'use strict';
-
-HeaderCtrl.$inject = ["$rootScope"];
-function HeaderCtrl($rootScope) {
-  var vm = this;
-
-  $rootScope.$on('titleChanged', function (event, title) {
-    vm.title = title;
-  });
-}
-
-angular.module('app.header').controller('HeaderCtrl', HeaderCtrl);
-'use strict';
-
 UserCtrl.$inject = ["$rootScope"];
 function UserCtrl($rootScope) {
   var vm = this;
@@ -161,6 +99,18 @@ angular.module('app.users').config(["$routeProvider", function ($routeProvider) 
 }]);
 'use strict';
 
+HeaderCtrl.$inject = ["$rootScope"];
+function HeaderCtrl($rootScope) {
+  var vm = this;
+
+  $rootScope.$on('titleChanged', function (event, title) {
+    vm.title = title;
+  });
+}
+
+angular.module('app.header').controller('HeaderCtrl', HeaderCtrl);
+'use strict';
+
 function AccountCard() {
   return {
     templateUrl: '/app/src/widgets/accountCard/account-card.html'
@@ -168,6 +118,15 @@ function AccountCard() {
 }
 
 angular.module('app.widgets').directive('accountCard', AccountCard);
+'use strict';
+
+function AccountDetailCard() {
+  return {
+    templateUrl: '/app/src/widgets/accountDetailCard/account-detail-card.html'
+  };
+}
+
+angular.module('app.widgets').directive('accountDetailCard', AccountDetailCard);
 'use strict';
 
 Info.$inject = ["$log"];
@@ -185,15 +144,6 @@ function Info($log) {
 }
 
 angular.module('app').directive('info', Info);
-'use strict';
-
-function AccountDetailCard() {
-  return {
-    templateUrl: '/app/src/widgets/accountDetailCard/account-detail-card.html'
-  };
-}
-
-angular.module('app.widgets').directive('accountDetailCard', AccountDetailCard);
 'use strict';
 
 function NavHeader() {

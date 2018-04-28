@@ -11,10 +11,10 @@ angular.module('app.accounts', []);
 angular.module('app.core', ['ngRoute']);
 'use strict';
 
-angular.module('app.header', []);
+angular.module('app.users', []);
 'use strict';
 
-angular.module('app.users', []);
+angular.module('app.header', []);
 'use strict';
 
 //application-specific components in this module

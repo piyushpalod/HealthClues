@@ -1,28 +1,16 @@
-//class AccountCtrl {
-//  constructor(accountSvc,$log) {
-//    $log.debug('debug from AccountCtrl');
-//
-//    this.myProperty = 'here i is';
-//
-//    accountSvc.myGetFunction('/assets/data/contacts.json')
-//      .then(result => this.accounts = result.accounts);
-//  }
-//
-//  myFunction(arg) {
-//    console.log(arg);
-//  }
-//}
-
-function AccountCtrl($rootScope, $log, AccountSvc) {
+function AccountCtrl(AccountSvc, $window) {
   var vm = this;
   
-  $log.debug('Set $logProvider.debugEnabled(false) in app.config.js to turn this message off');
     
   vm.myProperty = 'my property';
+  vm.openForm = openForm;
   
-  $rootScope.$emit('titleChanged', 'home');
+  function openForm(url){
+	  $window.open(url, '_blank');
+  };
+  
 
-  AccountSvc.myGetFunction('/assets/data/accounts.json')
+  AccountSvc.myGetFunction()
     .then(function(response) {
       vm.accounts = response.data;
     });
